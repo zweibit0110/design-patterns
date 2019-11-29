@@ -1,0 +1,60 @@
+@startuml
+
+skinparam note {
+    borderColor grey
+    backgroundColor white
+}
+
+skinparam legend {
+    borderColor white
+    fontSize 20
+    fontColor grey
+}
+
+package com.deloitte.training.oodesignpatterns.creational.factorymethod {
+    ' Classes and interfaces
+    interface Shape {
+        + draw()
+    }
+    class Circle {
+        + draw()
+    }
+    class Rectangle {
+        + draw()
+    }
+    class Square {
+        + draw()
+    }
+    class ShapeFactory {
+        + getShape(shapeType) : Shape
+    }
+    class ShapeFactoryTest
+
+    ' relationships
+    Circle --> Shape : implements
+    Rectangle --> Shape : implements
+    Square --> Shape : implements
+
+    ShapeFactory .^ Shape : create
+    ShapeFactoryTest o- ShapeFactory : use
+
+    ' hide garbage
+    hide empty fields
+    hide empty methods
+
+    ' notes
+    note bottom of ShapeFactory
+        getShape(shapeType) is <b>the factory method</b>
+    end note
+    note bottom of ShapeFactoryTest
+        Shape circle = new ShapeFactory().getShape(ShapeType.CIRCLE)
+        <i><size:10><color:grey>read: <b>ShapeFactoryTest</b> uses <b>ShapeFactory.getShape(...)</b> method to create a specific CIRCLE <b>Shape</b></color></size></i>
+    end note
+}
+
+'legend
+legend bottom left
+FACTORY METHOD [design pattern]
+end legend
+
+@enduml

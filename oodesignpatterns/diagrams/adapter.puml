@@ -1,0 +1,105 @@
+@startuml
+
+skinparam note {
+    borderColor grey
+    backgroundColor white
+}
+
+skinparam legend {
+    borderColor white
+    fontSize 20
+    fontColor grey
+}
+
+package com.deloitte.training.oodesignpatterns.structural.adapter {
+    ' Classes and interfaces
+    together {
+        interface USAPlug {
+            + provideUSAElectricity() : Voltage
+        }
+        class USAPlugImpl {
+            + provideUSAElectricity() : Voltage
+        }
+        class USAElectricalSocket {
+            + plugIn(usaPlug) : String
+        }
+        class USAToEuropePlugAdapter {
+            - convertVoltage(usaVoltage) : Voltage
+            + provideEuropeElectricity() : Voltage
+        }
+    }
+    
+    interface EuropePlug {
+        + provideEuropeElectricity() : Voltage
+    }
+    class EuropePlugImpl {
+        + provideEuropeElectricity() : Voltage
+    }
+    class EuropeElectricalSocket {
+        + plugIn(europePlug) : String
+    }
+        
+    together {
+        interface UKPlug {
+            + provideUKElectricity() : Voltage
+        }
+        class UKPlugImpl {
+            + provideUKElectricity() : Voltage
+        }
+        class UKElectricalSocket {
+            + plugIn(ukPlug) : String
+        }
+        class UKToEuropePlugAdapter {
+            - ukPlug : UKPlug
+            + UKToEuropePlugAdapter(ukPlug)
+            + provideEuropeElectricity() : Voltage
+        }
+    }
+    
+    class PlugAdaptersTest
+    
+    ' relationships
+    UKPlugImpl --> UKPlug : implements
+    
+    UKToEuropePlugAdapter --> EuropePlug : implements
+    EuropePlugImpl --> EuropePlug : implements
+    USAToEuropePlugAdapter --> EuropePlug : implements
+
+    USAToEuropePlugAdapter --|> USAPlugImpl : extends
+    USAPlugImpl --> USAPlug : implements
+    
+    UKPlug ..^ UKElectricalSocket : plug in
+    EuropePlug ..^ EuropeElectricalSocket : plug in
+    USAPlug ..^ USAElectricalSocket : plug in
+
+    UKToEuropePlugAdapter *-- UKPlug : contains
+
+    EuropeElectricalSocket --o PlugAdaptersTest : use
+    UKElectricalSocket --o PlugAdaptersTest : use
+    PlugAdaptersTest o-- USAElectricalSocket : use
+
+    ' hide garbage
+    hide empty fields
+    hide empty methods
+
+    ' notes
+    note "<i><size:10><color:grey>Adapters:\n<i><size:10><color:grey><b>UKToEuropePlugAdapter</b> uses composition and inheritance\n<i><size:10><color:grey><b>USAToEuropePlugAdapter</b> uses inheritance" as n3
+    note left of PlugAdaptersTest
+        <i><size:10><color:grey>Straightforward utilization:</color></size></i>
+        europeElectricalSocket.plugIn(europePlug)
+        usaElectricalSocket.plugIn(usaPlug)
+        ukElectricalSocket.plugIn(ukPlug)
+
+        <i><size:10><color:grey>Adapters:</color></size></i>
+        europeElectricalSocket.plugIn(ukToEuropePlugAdapter(ukPlug))
+        
+        europeElectricalSocket.plugIn(usaToEuropePlugAdapter)
+    end note
+}
+
+'legend
+legend bottom left
+ADAPTER [design pattern]
+end legend
+
+@enduml

@@ -1,0 +1,80 @@
+@startuml
+
+skinparam note {
+    borderColor grey
+    backgroundColor white
+}
+
+skinparam legend {
+    borderColor white
+    fontSize 20
+    fontColor grey
+}
+
+package com.deloitte.training.oodesignpatterns.behavioral.chainOfResponsibility {
+    ' Classes and interfaces
+    interface DispenseChain {
+        + setNextChain(dispenseChain)
+        + dispense(currency)
+    }
+    class VerifyTenMultiplierDispenser {
+        - nextChain : DispenseChain
+        + setNextChain(dispenseChain)
+        + dispense(currency)
+    }
+    class Dollar50Dispenser {
+        - nextChain : DispenseChain
+        + setNextChain(dispenseChain)
+        + dispense(currency)
+    }
+    class Dollar20Dispenser {
+        - nextChain : DispenseChain
+        + setNextChain(dispenseChain)
+        + dispense(currency)
+    }
+    class Dollar10Dispenser {
+        - nextChain : DispenseChain
+        + setNextChain(dispenseChain)
+        + dispense(currency)
+    }
+    class ATMDispenserTest
+
+    ' relationships
+    DispenseChain <-- VerifyTenMultiplierDispenser : implements
+    DispenseChain <-- Dollar50Dispenser : implements
+    DispenseChain <-- Dollar20Dispenser : implements
+    DispenseChain <-- Dollar10Dispenser : implements
+    DispenseChain *- DispenseChain : contains (nextChain)
+
+    ATMDispenserTest o- DispenseChain : use
+    
+    ' hide garbage
+    hide empty fields
+    hide empty methods
+    
+    ' notes
+    note bottom of ATMDispenserTest
+        <i><size:10><color:grey>Setup the chain of dispensers:
+        dispenser = new VerifyTenMultiplierDispenser()
+        dollar50Dispenser = new Dollar50Dispenser()
+        dollar20Dispenser = new Dollar20Dispenser()
+        dollar10Dispenser = new Dollar10Dispenser()
+        
+        dispenser.setNextChain(dollar50Dispenser)
+        dollar50Dispenser.setNextChain(dollar20Dispenser)
+        dollar20Dispenser.setNextChain(dollar10Dispenser)
+
+        <i><size:10><color:grey>Dispense amount of currency:
+        dispenser.dispense(new Currency(50 + 20 + 10))
+
+        <i><size:10><color:grey>Output:
+        <i><size:10><color:grey><b>Dispensing 1 50$ note; Dispensing 1 20$ note; Dispensing 1 10$ note
+    end note
+}
+
+'legend
+legend bottom left
+CHAIN OF RESPONSIBILITY [design pattern]
+end legend
+
+@enduml

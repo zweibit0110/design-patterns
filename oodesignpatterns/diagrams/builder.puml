@@ -1,0 +1,63 @@
+@startuml
+
+skinparam note {
+    borderColor grey
+    backgroundColor white
+}
+
+skinparam legend {
+    borderColor white
+    fontSize 20
+    fontColor grey
+}
+
+package com.deloitte.training.oodesignpatterns.creational.builder {
+    ' Classes and interfaces
+    interface Builder {
+        +build(): T
+    }
+    class BikeBuilder {
+        +build(): Bike
+    }
+    class CarBuilder {
+        +build(): Car
+    }
+    class Bike
+    class Car
+    class CarBuilderTest
+    class BikeBuilderTest
+
+    ' relationships
+    CarBuilder --> Builder : implements
+    BikeBuilder --> Builder : implements
+
+    BikeBuilderTest o- Builder : use
+    Builder -o CarBuilderTest : use
+
+    Car ^. CarBuilder : create
+    BikeBuilder .^ Bike : create
+
+    ' hide garbage
+    hide empty fields
+    hide empty methods
+
+    ' notes
+    note bottom of BikeBuilderTest
+        Bike bike = new Bike.BikeBuilder().
+                            bikeType(...).
+                            color(...).
+                            build()
+        <i><size:10><color:grey>read: <b>BikeBuilderTest</b> uses <b>BikeBuilder</b> (which is a <b>Builder</b>) to create a <b>Bike</b></color></size></i>
+    end note
+    note bottom of CarBuilderTest
+        Car car = new CarBuilder().setX(...).setY(...).build()
+        <i><size:10><color:grey>read: <b>CarBuilderTest</b> uses <b>CarBuilder</b> (which is a <b>Builder</b>) to create a <b>Car</b></color></size></i>
+    end note
+}
+
+'legend
+legend bottom left
+BUILDER [design pattern]
+end legend
+
+@enduml

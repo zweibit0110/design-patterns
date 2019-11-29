@@ -1,0 +1,73 @@
+@startuml
+
+skinparam note {
+    borderColor grey
+    backgroundColor white
+}
+
+skinparam legend {
+    borderColor white
+    fontSize 20
+    fontColor grey
+}
+
+package com.deloitte.training.oodesignpatterns.structural.bridge {
+    ' Classes and interfaces
+    together {
+        interface Color {
+            + applyColor() : String
+        }
+        class GreenColor {
+            + applyColor() : String
+        }
+        class RedColor {
+            + applyColor() : String
+        }
+    }
+    abstract class Shape {
+        # color : Color
+        + Shape(color)
+        + {abstract} drawWithColor() : String
+    }
+    class Triangle {
+        + Triangle(color)
+        + drawWithColor() : String
+    }
+    class Pentagon {
+        + Pentagon(color)
+        + drawWithColor() : String
+    }
+
+    class ColorShapeTest
+
+    ' relationships
+    Color <-- RedColor : implements
+    Color <-- GreenColor : implements
+
+    Triangle --|> Shape : extends
+    Pentagon --|> Shape : extends
+
+    Shape --* Color : contains/delegates
+
+    ColorShapeTest o- Shape : use
+
+    ' hide garbage
+    hide empty fields
+    hide empty methods
+
+    ' notes
+    note bottom of ColorShapeTest
+        <i><size:10><color:grey>Builds a triangle shape and fill it with red color</color></size></i>
+        Shape redTriangle = new Triangle(new RedColor())
+        
+        redTriangle.drawWithColor()
+    end note
+    note "<size:12><color:grey>Bridge between <b>Shape</b> and <b>Color</b> class hierarchies" as n2
+}
+
+'legend
+legend bottom left
+BRIDGE [design pattern]
+end legend
+
+@enduml

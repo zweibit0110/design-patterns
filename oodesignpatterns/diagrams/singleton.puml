@@ -1,0 +1,45 @@
+@startuml
+
+skinparam note {
+    borderColor grey
+    backgroundColor white
+}
+
+skinparam legend {
+    borderColor white
+    fontSize 20
+    fontColor grey
+}
+
+package com.deloitte.training.oodesignpatterns.creational.singleton {
+    'classes
+    class Singleton {
+        - {static} instance : Singleton
+        - Singleton()
+        + {static} getInstance() : Singleton
+    }
+
+    'notes
+    note left of Singleton::instance
+        private and static field
+    end note
+
+    note left of Singleton::Singleton()
+        private constructor
+    end note
+
+    note left of Singleton::getInstance
+        public and static method,
+        returning the unique <b>instance</b>
+    end note
+
+    'relantionships
+    Singleton *.. Singleton
+}
+
+'legend
+legend bottom left
+SINGLETON [design pattern]
+end legend
+
+@enduml

@@ -1,0 +1,75 @@
+@startuml
+
+skinparam note {
+    borderColor grey
+    backgroundColor white
+}
+
+skinparam legend {
+    borderColor white
+    fontSize 20
+    fontColor grey
+}
+
+package com.deloitte.training.oodesignpatterns.structural.composite {
+    ' Classes and interfaces
+    abstract class Employee {
+        - name : String
+        + getName() : String
+        + getRole() : String
+        + getTeamMembers() : String
+        + {abstract} getDailyRate() : int
+        + getTeamDailyCost() : int
+    }
+    class Developer {
+        + getDailyRate() : int
+    }
+    class Tester {
+        + getDailyRate() : int
+    }
+    class Analyst {
+        + getDailyRate() : int
+    }
+    class ProjectManager {
+        - employees : List<Employee>
+        + add(employee)
+        + remove(employee)
+        + getTeamMembers() : String
+        + getDailyRate() : int
+        + getTeamDailyCost() : int
+    }
+    class EmployeeTest
+    
+    ' relationships
+    Employee <|-- Developer : extends
+    Employee <|-- Tester : extends
+    Employee <|-- Analyst : extends
+    Employee <|-- ProjectManager : extends
+    
+    Employee "0..*" --* ProjectManager : contains
+
+    Employee -o EmployeeTest : use
+    
+    ' hide garbage
+    hide empty fields
+    hide empty methods
+    
+    ' notes
+    note top of EmployeeTest
+        <i><size:10><color:grey>Build a team of <b>Employee</b>s lead by a project manager:
+        andy = new ProjectManager("andy")
+        andy.add(johnDev)
+        andy.add(maryTest)
+        
+        <i><size:10><color:grey>Calculates daily cost of the team and display it:
+        andy.getTeamDailyCost()
+        andy.getTeamMembers()
+    end note
+}
+
+'legend
+legend bottom left
+COMPOSITE [design pattern]
+end legend
+
+@enduml

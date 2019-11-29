@@ -1,0 +1,54 @@
+@startuml
+
+skinparam note {
+    borderColor grey
+    backgroundColor white
+}
+
+skinparam legend {
+    borderColor white
+    fontSize 20
+    fontColor grey
+}
+
+package bad-hierarchies {
+    ' Classes and interfaces
+    interface Shape
+    class Triangle
+    class Pentagon
+    interface Color
+    class RedTriangle
+    class GreenTriangle
+    class RedPentagon
+    class GreenPentagon
+
+    ' relationships
+    Shape <-- Triangle : implements
+    Shape <-- Pentagon : implements
+
+    Color <-- RedTriangle : implements
+    Triangle <-- RedTriangle : implements
+
+    Color <-- GreenTriangle : implements
+    Triangle <-- GreenTriangle : implements
+
+    Color <-- RedPentagon : implements
+    Pentagon <-- RedPentagon : implements
+
+    Color <-- GreenPentagon : implements
+    Pentagon <-- GreenPentagon : implements
+
+    ' hide garbage
+    hide empty fields
+    hide empty methods
+    
+    ' notes
+    note "<size:12><color:grey>Do you really wanna have \n<size:12><color:grey>more colors or shapes ...?!@;&$%\n\n<size:12><color:grey>You've got a matrix of them" as n1
+}
+
+'legend
+legend bottom left
+BAD HIERARCHIES leds us to the BRIDGE [design pattern]
+end legend
+
+@enduml

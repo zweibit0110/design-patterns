@@ -1,0 +1,102 @@
+@startuml
+
+skinparam note {
+    borderColor grey
+    backgroundColor white
+}
+
+skinparam legend {
+    borderColor white
+    fontSize 20
+    fontColor grey
+}
+
+package com.deloitte.training.oodesignpatterns.creational.abstractfactory {
+    ' Classes and interfaces
+    together {
+        interface Shape {
+            + draw()
+        }
+        class Circle {
+            + draw()
+        }
+        class Rectangle {
+            + draw()
+        }
+        class Square {
+            + draw()
+        }
+        class ShapeFactory {
+            + getShape(shapeType) : Shape
+        }
+    }
+
+    together {
+        interface Color {
+            + fill()
+        }
+        class Red {
+            + fill()
+        }
+        class Green {
+            + fill()
+        }
+        class Blue {
+            + fill()
+        }
+        class ColorFactory {
+            + getColor(colorType) : Color
+        }
+    }
+    
+    abstract class AbstractFactory {
+        + {abstract} getShape(shapeType) : Shape
+        + {abstract} getColor(colorType) : Color
+    }
+
+    class FactoryProducer {
+        +  getFactory(factoryType) : AbstractFactory
+    }
+    
+    class FactoriesTest
+
+    ' relationships
+    Circle --> Shape : implements
+    Rectangle --> Shape : implements
+    Square --> Shape : implements
+
+    ShapeFactory .^ Shape : create
+
+    Red --> Color : implements
+    Green --> Color : implements
+    Blue --> Color : implements
+
+    Color ^. ColorFactory : create
+
+    ShapeFactory --|> AbstractFactory : extends
+    ColorFactory --|> AbstractFactory : extends
+
+    FactoryProducer .^ AbstractFactory : create
+    FactoriesTest o- FactoryProducer : use
+
+    ' hide garbage
+    hide empty fields
+    hide empty methods
+
+    ' notes
+    note bottom of FactoriesTest
+        Shape circle = FactoryProducer.getFactory(FactoryType.SHAPE_FACTORY).getShape(ShapeType.CIRCLE)
+        <i><size:10><color:grey>read: <b>FactoriesTest</b> uses <b>FactoryProducer.getFactory(...)</b> method to create a specific factory (which is an <b>AbstractFactory</b>)</color></size></i>
+        <i><size:10><color:grey>then uses <b>getShape(...)</b> method to create a CIRCLE (which is a <b>Shape</b>)</color></size></i>
+        
+        Color red = FactoryProducer.getFactory(FactoryType.COLOR_FACTORY).getColor(ColorType.RED)
+    end note
+    note "<i><size:10><color:grey>Factory methods:\n<i><size:10><color:grey><b>getColor(...)</b>\n<i><size:10><color:grey><b>getShape(...)</b>\n<i><size:10><color:grey><b>getFactory(...)</b>" as n1
+}
+
+'legend
+legend bottom left
+ABSTRACT FACTORY [design pattern]
+end legend
+
+@enduml

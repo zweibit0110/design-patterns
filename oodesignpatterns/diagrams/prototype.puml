@@ -1,0 +1,62 @@
+@startuml
+
+skinparam note {
+    borderColor grey
+    backgroundColor white
+}
+
+skinparam legend {
+    borderColor white
+    fontSize 20
+    fontColor grey
+}
+
+package com.deloitte.training.oodesignpatterns.creational.prototype {
+    ' Classes and interfaces
+    interface Prototype {
+        +customClone() : Prototype
+    }
+    class ElectronicStore {
+        +customClone() : Prototype
+    }
+    class FoodStore {
+        +customClone() : Prototype
+    }
+    class ElectronicStoreTest
+    class FoodStoreTest
+
+    ' relationships
+    ElectronicStore --> Prototype : implements
+    FoodStore --> Prototype : implements
+
+    FoodStoreTest o- Prototype : use
+    Prototype -o ElectronicStoreTest : use
+
+    ' hide garbage
+    hide empty fields
+    hide empty methods
+
+    ' notes
+    note left of ElectronicStore::customClone
+        clone itself using <b>Deep Copy</b>
+    end note
+    note right of FoodStore::customClone
+        clone itself using <b>Shallow Copy</b>
+        (java.lang.Object.<b>clone()</b>)
+    end note
+    note bottom of ElectronicStoreTest
+        Object p = electronicStore.customClone();
+        <i><size:10><color:grey>read: <b>ElectronicStoreTest</b> uses <b>ElectronicStore</b> (which is a <b>Prototype</b>) to clone the store</color></size></i>
+    end note
+    note bottom of FoodStoreTest
+        Object p = foodStore.customClone();
+        <i><size:10><color:grey>read: <b>FoodStoreTest</b> uses <b>FoodStore</b> (which is a <b>Prototype</b>) to clone the store</color></size></i>
+    end note
+}
+
+'legend
+legend bottom left
+PROTOTYPE [design pattern]
+end legend
+
+@enduml

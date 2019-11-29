@@ -1,0 +1,71 @@
+@startuml
+
+skinparam note {
+    borderColor grey
+    backgroundColor white
+}
+
+skinparam legend {
+    borderColor white
+    fontSize 20
+    fontColor grey
+}
+
+package com.deloitte.training.oodesignpatterns.behavioral.observer {
+    ' Classes and interfaces
+    interface Observer {
+        + update()
+    }
+    interface Subject {
+        + register(observer)
+        + unregister(observer)
+        + notifyObservers()
+        + getMessage(observer) : Object
+    }
+    class Topic {
+        - observers : List<Observer>
+        + register(observer)
+        + unregister(observer)
+        + notifyObservers()
+        + postMessage(message)
+    }
+    class TopicSubscriber {
+        - name : String
+        - topic : Subject
+        + update()
+    }
+    class PublishSubscribeTest
+    
+    ' relationships
+
+    Observer <-- TopicSubscriber : implements
+    Subject <-- Topic : implements
+    Observer "0..*" -* Subject : contains
+    TopicSubscriber *- Topic : contains
+
+    Topic -o PublishSubscribeTest : use
+    
+    ' hide garbage
+    hide empty fields
+    hide empty methods
+    
+    ' notes
+    note bottom of PublishSubscribeTest
+        <i><size:10><color:grey>Build topic, observers and register observers to the topic:
+        topic = new Topic()
+        observer = new TopicSubscriber("First observer", topic)
+        topic.register(observer)
+        
+        <i><size:10><color:grey>Post a message on the topic:
+        topic.postMessage("a message")
+        
+        <i><size:10><color:grey>Output: <b> ... observer:: Consuming message::a message ...
+    end note
+}
+
+'legend
+legend bottom left
+OBSERVER [design pattern]
+end legend
+
+@enduml

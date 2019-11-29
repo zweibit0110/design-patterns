@@ -1,0 +1,78 @@
+@startuml
+
+skinparam note {
+    borderColor grey
+    backgroundColor white
+}
+
+skinparam legend {
+    borderColor white
+    fontSize 20
+    fontColor grey
+}
+
+package com.deloitte.training.oodesignpatterns.structural.decorator {
+    ' Classes and interfaces
+    interface Beverage {
+        + getIngredients() : List<Ingredient>
+    }
+    class Tea {
+        + getIngredients() : List<Ingredient>
+    }
+    class Coffee {
+        + getIngredients() : List<Ingredient>
+    }
+    class BeverageDecorator {
+        - beverage : Beverage
+        + getIngredients() : List<Ingredient>
+    }
+    class WithLemon {
+        + getIngredients() : List<Ingredient>
+    }
+    class WithMilk {
+        + getIngredients() : List<Ingredient>
+    }
+    class WithSugar {
+        + getIngredients() : List<Ingredient>
+    }
+    class WithCinnamon {
+        + getIngredients() : List<Ingredient>
+    }
+    class BeverageVendingMachineTest
+
+    ' relationships
+    Beverage <-- Tea : implements
+    Beverage <-- Coffee : implements
+    Beverage <-- BeverageDecorator : implements
+
+    Beverage --* BeverageDecorator : contains
+
+    BeverageDecorator <|-- WithLemon : extends
+    BeverageDecorator <|-- WithMilk : extends
+    BeverageDecorator <|-- WithSugar : extends
+    BeverageDecorator <|-- WithCinnamon : extends
+
+    Beverage -o BeverageVendingMachineTest : use
+    
+    ' hide garbage
+    hide empty fields
+    hide empty methods
+
+    ' notes
+    note bottom of BeverageVendingMachineTest
+        <i><size:10><color:grey>Create <b>Beverage</b> and decorate it with some ingredients:</color></size></i>
+        beverage = new WithSugar(new WithMilk(new Coffee()))
+        
+        <i><size:10><color:grey>Apply decoration by calling <b>getIngredients()</b> method:</color></size></i>
+        beverage.getIngredients()
+        
+        <i><size:10><color:grey>Output: <b>Cost of: coffee+milk+sugar is 25.</b></color></size></i>
+    end note
+}
+
+'legend
+legend bottom left
+DECORATOR [design pattern]
+end legend
+
+@enduml

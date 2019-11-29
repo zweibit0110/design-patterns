@@ -1,0 +1,73 @@
+@startuml
+
+skinparam note {
+    borderColor grey
+    backgroundColor white
+}
+
+skinparam legend {
+    borderColor white
+    fontSize 20
+    fontColor grey
+}
+
+package com.deloitte.training.oodesignpatterns.structural.flyweight {
+    ' Classes and interfaces
+    interface Shape {
+        + draw(graphics, x, y, width, height, color)
+    }
+    class Line {
+        + draw(graphics, x, y, width, height, color)
+    }
+    class Oval {
+        + draw(graphics, x, y, width, height, color)
+    }
+    class Rectangle {
+        + draw(graphics, x, y, width, height, color)
+    }
+    class ShapeFactory {
+        + {static} getShape(shapeType) : Shape
+    }
+    class ShapeCreationTest
+    class DrawingClient
+    
+    ' relationships
+    Line --> Shape : implements
+    Oval --> Shape : implements
+    Rectangle --> Shape : implements
+    
+    ShapeFactory .^ Shape : create
+    ShapeFactory --o ShapeCreationTest : use
+    ShapeCreationTest o-- Shape : use
+    ShapeFactory --o DrawingClient : use
+    DrawingClient o-- Shape : use
+
+    ' hide garbage
+    hide empty fields
+    hide empty methods
+    
+    ' notes
+    note bottom of ShapeCreationTest
+        <i><size:10><color:grey>Get <b>Shape</b> from the factory and draw it:</color></size></i>
+        shape = ShapeFactory.getShape(shapeType)
+        shape.draw(graphics, x, y, width, height, color)
+        
+        <i><size:10><color:grey>The factory contains a limited number of shapes (one for every shapeType).</color></size></i>
+    end note
+
+    note bottom of ShapeCreationTest
+        <i><size:10><color:grey>Output:
+        <i><size:10><color:grey><b>Creating Oval object with fill = true
+        <i><size:10><color:grey><b>Creating Oval object with fill = false
+        <i><size:10><color:grey><b>Creating Line object
+        <i><size:10><color:grey><b>Creating Rectangle object with fill = true
+        <i><size:10><color:grey><b>Creating Rectangle object with fill = false
+    end note
+}
+
+'legend
+legend bottom left
+FLYWEIGHT [design pattern]
+end legend
+
+@enduml

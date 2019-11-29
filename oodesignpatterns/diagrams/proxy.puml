@@ -1,0 +1,56 @@
+@startuml
+
+skinparam note {
+    borderColor grey
+    backgroundColor white
+}
+
+skinparam legend {
+    borderColor white
+    fontSize 20
+    fontColor grey
+}
+
+package com.deloitte.training.oodesignpatterns.structural.proxy {
+    ' Classes and interfaces
+    interface CommandExecutor {
+        + runCommand(cmd) : String
+    }
+    class CommandExecutorImpl {
+        + runCommand(cmd) : String
+    }
+    class CommandExecutorProxy {
+        - executor : CommandExecutorImpl
+        + CommandExecutorProxy()
+        + runCommand(cmd) : String
+    }
+    class CommandExecutorTest
+
+    ' relationships
+    CommandExecutor <-- CommandExecutorProxy : implements
+    CommandExecutor <-- CommandExecutorImpl : implements
+
+    CommandExecutorImpl -* CommandExecutorProxy : contains
+
+    CommandExecutorProxy -o CommandExecutorTest : use
+    
+    ' hide garbage
+    hide empty fields
+    hide empty methods
+
+    ' notes
+    note bottom of CommandExecutorTest
+        <i><size:10><color:grey>Create <b>CommandExecutor</b> proxy and run commands on it:</color></size></i>
+        executor = new CommandExecutorProxy()
+        executor.runCommand("cmd")
+
+        <i><size:10><color:grey>The command will not be executed straightforward, because the proxy will decide its execution.</color></size></i>
+    end note
+}
+
+'legend
+legend bottom left
+PROXY [design pattern]
+end legend
+
+@enduml
